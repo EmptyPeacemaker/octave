@@ -34,37 +34,37 @@
             {{$spectacles->onEachSide(1)->links()}}
         </div>
     </section>
-    <div class="modal fade" id="addSpectacle" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
-         data-edit="false">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Спектакль</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body d-flex align-items-center flex-column">
-                    <img src="" id="url" alt="" style="border-radius: 4px">
-                    <hr class="w-75 m-2">
-                    <div id="text" class="mb-3"></div>
-                    <hr class="w-75 m-2">
-                    <div id="comment"></div>
-                    <hr class="w-75 m-2">
-                    <form class="container">
-                        <div>
-                            <label for="exampleFormControlInput1" class="form-label">Автор</label>
-                            <input type="text" class="form-control" id="authComment" required>
-                        </div>
-                        <div class="mb-1">
-                            <label for="exampleFormControlTextarea1" class="form-label">Текст</label>
-                            <textarea class="form-control" id="textComment" rows="3" required></textarea>
-                        </div>
-                        <div class="btn btn-success" id="addComment">Добавить</div>
-                    </form>
-                </div>
-                <div class="modal-footer"></div>
-            </div>
-        </div>
-    </div>
+{{--    <div class="modal fade" id="addSpectacle" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"--}}
+{{--         data-edit="false">--}}
+{{--        <div class="modal-dialog">--}}
+{{--            <div class="modal-content">--}}
+{{--                <div class="modal-header">--}}
+{{--                    <h5 class="modal-title" id="exampleModalLabel">Спектакль</h5>--}}
+{{--                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>--}}
+{{--                </div>--}}
+{{--                <div class="modal-body d-flex align-items-center flex-column">--}}
+{{--                    <img src="" id="url" alt="" style="border-radius: 4px">--}}
+{{--                    <hr class="w-75 m-2">--}}
+{{--                    <div id="text" class="mb-3"></div>--}}
+{{--                    <hr class="w-75 m-2">--}}
+{{--                    <div id="comment"></div>--}}
+{{--                    <hr class="w-75 m-2">--}}
+{{--                    <form class="container">--}}
+{{--                        <div>--}}
+{{--                            <label for="exampleFormControlInput1" class="form-label">Автор</label>--}}
+{{--                            <input type="text" class="form-control" id="authComment" required>--}}
+{{--                        </div>--}}
+{{--                        <div class="mb-1">--}}
+{{--                            <label for="exampleFormControlTextarea1" class="form-label">Текст</label>--}}
+{{--                            <textarea class="form-control" id="textComment" rows="3" required></textarea>--}}
+{{--                        </div>--}}
+{{--                        <div class="btn btn-success" id="addComment">Добавить</div>--}}
+{{--                    </form>--}}
+{{--                </div>--}}
+{{--                <div class="modal-footer"></div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
 @endsection
 @section('script')
     <style>
@@ -99,20 +99,21 @@
         let char=(int)=>int>10?int:'0'+int;
 
         $('.hover-card').click(function () {
-            $('.modal-footer').html('Созданно ' + $(this).data('date'));
-            $('#url').attr('src', $(this).data('url'));
-            $('#exampleModalLabel').html($(this).data('title'));
-            $('#text').html($(this).data('text'));
-            $('#addComment').data('id',$(this).data('id'));
-            let html='';
-            $.each($(this).data('comments'),function (key,el) {
-                let date=new Date(el.create);
-                date=char(date.getHours())+':'+char(date.getMinutes())+' '+char(date.getDate())+'/'+char(date.getMonth())+'/'+date.getFullYear();
-                html+='<div class="toast" style="opacity: 1"><div class="toast-header"><strong class="me-auto">'+el.auth+'</strong><small>'+date+'</small></div><div class="toast-body">'+el.text+'</div></div>'
-            });
-            $('#comment').html(html==''?'Коментариев не обнаруженно':html);
-
-            new bootstrap.Modal($('#addSpectacle')).show();
+            window.location='/page/'+ $(this).data('id')
+            // $('.modal-footer').html('Созданно ' + $(this).data('date'));
+            // $('#url').attr('src', $(this).data('url'));
+            // $('#exampleModalLabel').html($(this).data('title'));
+            // $('#text').html($(this).data('text'));
+            // $('#addComment').data('id',$(this).data('id'));
+            // let html='';
+            // $.each($(this).data('comments'),function (key,el) {
+            //     let date=new Date(el.create);
+            //     date=char(date.getHours())+':'+char(date.getMinutes())+' '+char(date.getDate())+'/'+char(date.getMonth())+'/'+date.getFullYear();
+            //     html+=''
+            // });
+            // $('#comment').html(html==''?'Коментариев не обнаруженно':html);
+            //
+            // new bootstrap.Modal($('#addSpectacle')).show();
         });
     </script>
 @endsection

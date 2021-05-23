@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,22 +13,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
 Route::get('login', function () {
+    if (\App\Models\User::where('remember_token', session()->get('token'))->first())return redirect(\route('spectacle.index'));
     return view('login');
-})->name('login')   ;
+})->name('login');
 Route::post('login', function (\Illuminate\Http\Request $request) {
-    $user=\App\Models\User::where('login',$request->login)->where('password',$request->password)->first();
-    if ($user){
-        $token=\Illuminate\Support\Str::random(80);
-        $user->remember_token=$token;
+    $user = \App\Models\User::where('login', $request->login)->where('password', $request->password)->first();
+    if ($user) {
+        $token = \Illuminate\Support\Str::random(80);
+        $user->remember_token = $token;
         $user->save();
-        session()->push('token',$token);
+        session()->put('token', $token);
         return redirect(\route('spectacle.index'));
     }
 });
-Route::get('logout',function (){
-    \App\Models\User::where('remember_token',session()->get('token'))->update(['remember_token'=>null]);
+Route::get('logout', function () {
+    \App\Models\User::where('remember_token', session()->get('token'))->update(['remember_token' => null]);
     return redirect(\route('login'));
 })->name('logout');
 
@@ -42,18 +43,24 @@ Route::get('photos', function () {
     return view('photos', compact('photos'));
 })->name('photos');
 
-Route::get('spectacle/{text}', function ($text) {
-    if ($text) {
-        $spectacles = \App\Models\Spectacle::with('comments')->
-        orWhere('text', 'LIKE', '%' . $text . '%')->
-        orWhere('title', 'LIKE', '%' . $text . '%')->
-        orWhere('description', 'LIKE', '%' . $text . '%')->
-        paginate(10);
-    } else {
-        $spectacles = \App\Models\Spectacle::with('comments')->paginate(10);
-    }
+Route::get('spectacle', function () {
+    $spectacles = \App\Models\Spectacle::with('comments')->paginate(10);
     return view('spectacle', compact('spectacles'));
 })->name('spectacle');
+Route::get('page/{id}',function ($id){
+    $spectacle=\App\Models\Spectacle::with('comments')->where('id',$id)->first();
+    return view('page', compact('spectacle'));
+});
+
+Route::get('spectacle/{text}', function ($text) {
+    $spectacles = \App\Models\Spectacle::with('comments')->
+    orWhere('text', 'LIKE', '%' . $text . '%')->
+    orWhere('title', 'LIKE', '%' . $text . '%')->
+    orWhere('description', 'LIKE', '%' . $text . '%')->
+    paginate(10);
+    return view('spectacle', compact('spectacles'));
+})->name('spectacle');
+
 
 Route::post('comment', function (Illuminate\Http\Request $request) {
     \App\Models\Comment::create([
@@ -71,7 +78,6 @@ Route::post('request', function (\Illuminate\Http\Request $request) {
 
 
 Route::prefix('admin')->middleware('authUser')->group(function () {
-//    if (!$_SESSION['token'] || !\App\Models\User::where('remember_token',$_SESSION['token'])->first())return redirect(\route('home'));
     Route::prefix('spectacle')->group(function () {
         Route::get('/', [\App\Http\Controllers\SpectacleController::class, 'index'])->name('spectacle.index');
         Route::post('/', [\App\Http\Controllers\SpectacleController::class, 'save'])->name('spectacle.load');

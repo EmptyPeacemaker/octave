@@ -9,7 +9,6 @@ class SpectacleController extends Controller
 {
     public function index()
     {
-
         $spectacles=Spectacle::paginate(7);
         return view('admin.spectacle',compact('spectacles'));
     }
@@ -40,5 +39,6 @@ class SpectacleController extends Controller
     public function delete(Request $request)
     {
         Spectacle::where('id',$request->id)->first()->delete();
+        return response()->json()->setStatusCode(200);
     }
 }

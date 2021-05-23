@@ -25,13 +25,14 @@
                 <div class="text-center">
                     <div class="card-title" style="font-size: 25px">Мы дружный коллектив "Октава"!</div>
                     <div class="card-text">
-                        Здесь все о нашей театральной жизни: <br>наших наставниках, новых постановках, участиях в фестивалях
+                        Здесь все о нашей театральной жизни: <br>наших наставниках, новых постановках, участиях в
+                        фестивалях
                         <br> и многом-многом другом.
                     </div>
                 </div>
             </div>
             <div class="p-4 d-flex flex-column align-items-center">
-                <div class="pb-2 mt-5" style="background-color: rgba(128,128,128,0.08);border-radius: 4px">
+                <div class="pb-2 mt-5 w-100" style="background-color: rgba(128,128,128,0.08);border-radius: 4px">
                     <div class="splide mb-3" id="primary-slider">
                         <div class="splide__track">
                             <div class="splide__list">
@@ -41,12 +42,15 @@
                                             <div class="card bg-dark text-white">
                                                 <img src="{{$spectacle->url}}" class="card-img" style="z-index: 0">
                                                 <div class="card-img-overlay" style="z-index: 2;">
-                                                    <h5 class="card-title w-25" style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{$spectacle->title}}</h5>
-                                                    <p class="card-text w-25" style="max-height: 242px;overflow: hidden;">{{$spectacle->description}}</p>
+                                                    <h5 class="card-title w-25"
+                                                        style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{$spectacle->title}}</h5>
+                                                    <p class="card-text w-25"
+                                                       style="max-height: 242px;overflow: hidden;">{{$spectacle->description}}</p>
                                                     <p class="card-text">{{$spectacle->created_at->format('H:i d/m/Y')}}</p>
                                                 </div>
                                             </div>
-                                            <div class="hover-card w-100 h-100 top-0" style="background-color: rgba(0, 0, 0, 0.25);position: absolute;border-radius: 0.25em;z-index: 1;"></div>
+                                            <div class="hover-card w-100 h-100 top-0"
+                                                 style="background-color: rgba(0, 0, 0, 0.25);position: absolute;border-radius: 0.25em;z-index: 1;"></div>
                                         </div>
                                     </div>
                                 @endforeach
@@ -72,9 +76,12 @@
                 <div class="text-center">
                     <div class="card-title" style="font-size: 25px">Вся жизнь — театр, а люди в нем — актеры</div>
                     <div class="card-text">
-                        Мы обучим вас не просто выступать как профессиональный актер, а жить сценой, <br> словно это ваш второй дом!
+                        Мы обучим вас не просто выступать как профессиональный актер, а жить сценой, <br> словно это ваш
+                        второй дом!
                     </div>
-                    <div class="btn btn-outline-primary mt-2" data-bs-toggle="modal" data-bs-target="#addUser">Узнать подробнее</div>
+                    <div class="btn btn-outline-primary mt-2" data-bs-toggle="modal" data-bs-target="#addUser">Узнать
+                        подробнее
+                    </div>
                 </div>
             </div>
         </div>
@@ -99,7 +106,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Телефон</label>
-                        <input type="text" class="form-control" name="phone"  required>
+                        <input type="text" class="form-control" name="phone" required>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -111,10 +118,11 @@
 @endsection
 @section('script')
     <style>
-        #secondary-slider .splide__track .splide__slide{
+        #secondary-slider .splide__track .splide__slide {
             opacity: 0.75;
         }
-        #secondary-slider .splide__track .is-active{
+
+        #secondary-slider .splide__track .is-active {
             opacity: 1;
             border: none;
         }
@@ -127,9 +135,9 @@
                 url: '{{asset('request')}}',
                 data: {
                     '_token': "{{csrf_token()}}",
-                    'fio':$('input[name=fio]').val(),
-                    'phone':$('input[name=phone]').val(),
-                    'type':$('select[name=type]').val()
+                    'fio': $('input[name=fio]').val(),
+                    'phone': $('input[name=phone]').val(),
+                    'type': $('select[name=type]').val()
                 },
                 dataType: 'JSON',
                 success: (response) => {
@@ -137,27 +145,28 @@
                 }
             })
         });
-        new Splide( '#primary-slider', {
-            type       : 'fade',
-            heightRatio: 0.5,
-            pagination : false,
-            arrows     : false,
-            cover      : true,
-        } ).sync( new Splide( '#secondary-slider', {
-            rewind      : true,
-            fixedWidth  : 100,
-            fixedHeight : 64,
+        let secondary = new Splide('#secondary-slider', {
+            rewind: true,
+            fixedWidth: 100,
+            fixedHeight: 64,
             isNavigation: true,
-            gap         : 10,
-            focus       : 'center',
-            pagination  : false,
-            cover       : true,
-            breakpoints : {
+            gap: 10,
+            focus: 'center',
+            pagination: false,
+            cover: true,
+            breakpoints: {
                 '600': {
-                    fixedWidth  : 66,
-                    fixedHeight : 40,
+                    fixedWidth: 66,
+                    fixedHeight: 40,
                 }
             }
-        } ).mount() ).mount();
+        }).mount();
+        new Splide('#primary-slider', {
+            type: 'fade',
+            heightRatio: 0.5,
+            pagination: false,
+            arrows: false,
+            cover: true,
+        }).sync(secondary).mount();
     </script>
 @endsection

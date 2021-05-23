@@ -107,7 +107,7 @@
                     '_token': "{{csrf_token()}}"
                 },
                 dataType: 'JSON',
-                success: ()=>{
+                success: (response)=>{
                     window.location.reload()
                 }
             })
