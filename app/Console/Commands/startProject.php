@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Photo;
 use App\Models\Spectacle;
+use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
@@ -42,9 +43,13 @@ class startProject extends Command
      */
     public function handle()
     {
-        Artisan::call('migrate:rollback');
         Artisan::call('migrate');
         Artisan::call('storage:link');
+
+        User::create([
+            'login'=>'admin',
+            'password'=>'admin'
+        ]);
 
         $i=1;
         foreach (File::files(storage_path('app/public/photo')) as $file){
