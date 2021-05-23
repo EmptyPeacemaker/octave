@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Photo;
+use App\Models\Spectacle;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
@@ -43,10 +44,20 @@ class startProject extends Command
     {
         Artisan::call('migrate:rollback');
         Artisan::call('migrate');
+        Artisan::call('storage:link');
 
+        $i=1;
         foreach (File::files(storage_path('app/public/photo')) as $file){
             Photo::create(['url'=>'/storage/photo/'.$file->getFilename(),'user_id'=>12]);
+            Spectacle::create([
+                'url'=>'/storage/photo/'.$file->getFilename(),
+                'title'=>'text_'.$i,
+                'description'=>'text_'.$i,
+                'text'=>'text_'.$i
+            ]);
+            $i++;
         }
+
         return 0;
     }
 }

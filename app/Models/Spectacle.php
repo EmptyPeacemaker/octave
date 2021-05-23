@@ -15,4 +15,9 @@ class Spectacle extends Model
     {
         return $query->orderBy(DB::raw('RAND()'))->take($size);
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class,'spectacle_id','id');
+    }
 }

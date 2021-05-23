@@ -9,15 +9,19 @@
             <th scope="col">Фото</th>
             <th scope="col">Автор</th>
             <th scope="col">Дата добавления</th>
+            <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
         @foreach($photos as $photo)
             <tr>
-                <th scope="row">{{$photo->id++}}</th>
+                <th scope="row">{{$photo->id}}</th>
                 <td><img style="height: 80px" src="{{$photo->url}}" alt=""></td>
                 <td>{{$photo->user_id}}</td>
                 <td>{{$photo->create}}</td>
+                <td>
+                    <span class="material-icons delete btn btn-outline-danger" data-id="{{$photo->id}}">delete</span>
+                </td>
             </tr>
         @endforeach
         </tbody>
@@ -51,19 +55,33 @@
 @endsection
 @section('script')
 <script>
+    $('.delete').click(function () {
+        $.ajax({
+            type:'DELETE',
+            url:'{{route('photo.delete')}}',
+            data: {
+                'id':$(this).data('id'),
+                '_token': "{{csrf_token()}}"
+            },
+            dataType: 'JSON',
+            success: ()=>{
+                window.location.reload()
+            }
+        })
+    });
     $('#addPhotoInput').change(function (e){
         if (/image.+/i.test($(this)[0].files[0].type) === false){
             alert("Выберите файл фотографии!")
             $(this).val('')
         }
-    })
+    });
     $('#addForm').submit(function (e){
         e.preventDefault()
         let photo = $('#addPhotoInput')[0].files;
         if (photo.length === 1){
             let formData = new FormData();
-            formData.append('photo',photo[0])
-            formData.append('_token',"{{ csrf_token() }}")
+            formData.append('photo',photo[0]);
+            formData.append('_token',"{{ csrf_token() }}");
             $.ajax({
                 type:'POST',
                 url:'{{route('photo.load')}}',
@@ -78,6 +96,6 @@
         } else {
             alert("Должна быть выбрана фотография!")
         }
-    })
+    });
 </script>
 @endsection
