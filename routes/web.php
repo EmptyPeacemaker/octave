@@ -12,9 +12,8 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('login', function () {
-    if (\App\Models\User::where('remember_token', session()->get('token'))->first())return redirect(\route('spectacle.index'));
+    if (session()->get('token')!==null && \App\Models\User::where('remember_token', session()->get('token'))->first())return redirect(\route('spectacle.index'));
     return view('login');
 })->name('login');
 Route::post('login', function (\Illuminate\Http\Request $request) {
@@ -25,6 +24,8 @@ Route::post('login', function (\Illuminate\Http\Request $request) {
         $user->save();
         session()->put('token', $token);
         return redirect(\route('spectacle.index'));
+    }else{
+        return redirect(\route('login'));
     }
 });
 Route::get('logout', function () {

@@ -6,11 +6,9 @@
                     src="{{$spectacle->url}}"
                     class="card-img-top" alt="...">
             <div class="card-body">
-                <h5 class="card-title"
-                    style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis">{{$spectacle->title}}</h5>
+                <h5 class="card-title">{{$spectacle->title}}</h5>
                 <hr class="w-100">
-                <p class="card-text"
-                   style="max-height: 75px;overflow: hidden">{{$spectacle->text}}</p>
+                <p class="card-text">{{$spectacle->text}}</p>
             </div>
             <div class="card-footer text-muted">
                 Созданно {{$spectacle->created_at->format('H:i d/m/Y')}}</div>
