@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 /*
 |--------------------------------------------------------------------------
@@ -94,4 +96,29 @@ Route::prefix('admin')->middleware('authUser')->group(function () {
         $requests = \App\Models\Request::paginate(15);
         return view('admin.request', compact('requests'));
     })->name('request.index');
+    Route::get('file',function (){
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'Тип');
+        $sheet->setCellValue('B1', 'Имя');
+        $sheet->setCellValue('C1', 'Телефон');
+        $sheet->setCellValue('D1', 'Дата подачи');
+
+        $request = \App\Models\Request::all();
+
+        for ($i=0;$i<$request->count();$i++){
+            $cell=$i+2;
+            $sheet->setCellValue('A'.$cell, $request[$i]->type);
+            $sheet->setCellValue('B'.$cell, $request[$i]->fio);
+            $sheet->setCellValue('C'.$cell, $request[$i]->phone);
+            $sheet->setCellValue('D'.$cell, $request[$i]->create->format('H:i d/m/Y'));
+        }
+
+
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('Export.xlsx');
+
+        return response()->download('Export.xlsx');
+    })->name('download');
 });
+

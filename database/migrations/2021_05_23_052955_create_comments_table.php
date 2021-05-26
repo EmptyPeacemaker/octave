@@ -17,8 +17,10 @@ class CreateCommentsTable extends Migration
             $table->id();
             $table->string('auth');
             $table->string('text');
-            $table->string('spectacle_id');
+            $table->bigInteger('spectacle_id')->unsigned();
             $table->timestamp('create');
+
+            $table->foreign('spectacle_id')->references('id')->on('spectacles');
         });
     }
 

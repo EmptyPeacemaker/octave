@@ -6,15 +6,17 @@
                  style="z-index: -3">
                 <div class="carousel-inner">
                     @foreach($photos as $url)
-                        <div class="carousel-item @if($loop->first) active @endif" data-bs-interval="2000000">
+                        <div class="carousel-item @if($loop->first) active @endif" data-bs-interval="2000">
                             <img src="{{$url}}" class="d-block w-100" alt="...">
                         </div>
                     @endforeach
                 </div>
             </div>
-            <div class="top-0 absolute w-100 h-100" style="background: rgba(0,0,0,0.4);z-index: -2"></div>
+            <div class="top-0 absolute w-100 h-100 d-flex justify-content-center align-items-center text-center" style="background: rgba(0,0,0,0.4);z-index: -2;color: white;font-size: 40px">
+                Добро пожаловать,<br> любитель театра!
+            </div>
         </div>
-        <div style="height: 50vh;">
+        <div style="height: 100vh;">
         </div>
     </section>
     <section style="background: white">
@@ -130,13 +132,25 @@
     <script>
         $('#formRequest').submit(function (e) {
             e.preventDefault();
+            let fio = $('input[name=fio]').val(),
+                phone = $('input[name=phone]').val()
+
+            if(!/^[А-Яа-яA-Za-z\s]*$/u.test(fio)){
+                alert('Поле Имя должно содержать только буквы');
+                return;
+            }
+            if(!/^[+0-9()\s-]*$/u.test(phone)){
+                alert('Поле Телефон должно содержать только цифры');
+                return;
+            }
+
             $.ajax({
                 type: 'POST',
                 url: '{{asset('request')}}',
                 data: {
                     '_token': "{{csrf_token()}}",
-                    'fio': $('input[name=fio]').val(),
-                    'phone': $('input[name=phone]').val(),
+                    'fio': fio,
+                    'phone': phone,
                     'type': $('select[name=type]').val()
                 },
                 dataType: 'JSON',

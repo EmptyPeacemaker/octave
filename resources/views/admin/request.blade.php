@@ -8,8 +8,9 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Тип</th>
-                <th scope="col">Зовут</th>
+                <th scope="col">Имя</th>
                 <th scope="col">Телефон</th>
+                <th scope="col">Дата подачи</th>
             </tr>
             </thead>
             <tbody>
@@ -19,6 +20,7 @@
                     <td>{{$request->type}}</td>
                     <td>{{$request->fio}}</td>
                     <td>{{$request->phone}}</td>
+                    <td>{{$request->create->format('H:i d/m/Y')}}</td>
                 </tr>
             @endforeach
             </tbody>
@@ -26,6 +28,7 @@
         <div class="pb-3">
             {{$requests->onEachSide(1)->links()}}
         </div>
+        <a href="{{route('download')}}" class="btn btn-success">Скачать отчет</a>
     </div>
 
 @endsection
