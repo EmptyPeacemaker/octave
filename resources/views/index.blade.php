@@ -13,7 +13,7 @@
                 </div>
             </div>
             <div class="top-0 absolute w-100 h-100 d-flex justify-content-center align-items-center text-center" style="background: rgba(0,0,0,0.4);z-index: -2;color: white;font-size: 40px">
-                Добро пожаловать,<br> любитель театра!
+                <div style="margin-top: -400px">Добро пожаловать,<br> любитель театра!</div>
             </div>
         </div>
         <div style="height: 100vh;">

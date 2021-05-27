@@ -37,7 +37,7 @@ Route::get('logout', function () {
 
 
 Route::get('/', function () {
-    $photos = \App\Models\Photo::takeRandom(2)->get()->pluck('url');
+    $photos = \App\Models\Photo::takeRandom(10)->get()->pluck('url');
     $spectacles = \App\Models\Spectacle::takeRandom(10)->get();
     return view('index', compact('photos', 'spectacles'));
 })->name('home');
